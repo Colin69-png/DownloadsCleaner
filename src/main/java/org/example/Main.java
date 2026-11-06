@@ -284,9 +284,9 @@ public class Main {
             }
             if (intro) {
                 System.out.println("Welcome to Download-Cleaner\nThis Programm will clear your Download Folder and transfer all Files to specific locations");
-                System.out.println("You can view the destination-folders in the 'where too' file on gitHub");
-                System.out.println("Press any key once you are ready to start. :)");
-                br.readLine();
+                System.out.println("You can view the destination-folders in the 'README' file on gitHub");
+                System.out.println("Press enter once you are ready to start. :)");
+                br.read();
             }
             Map<String, String> regeln = new HashMap<>();
             String endung;
@@ -308,8 +308,8 @@ public class Main {
                 } else {
                     Path folder = Path.of(ordnerPfad);
                     if (!Files.exists(folder)) {
-                        System.out.print("The system could not find the specified path");
-                        System.out.println("Setting path to Downloads");
+                        System.out.println("The system could not find the specified path");
+                        System.out.println("Setting path to Downloads...\n\n");
                         ordnerPfad = System.getProperty("user.home") + "//Downloads";
                         Thread.sleep(1000);
                     }  else {
@@ -320,7 +320,6 @@ public class Main {
                         }
                     }
                 }
-
             } catch (Exception e) {
                 System.out.println("Something went wrong. "+e.getMessage());
                 System.exit(0);
@@ -339,13 +338,16 @@ public class Main {
             List<Path> filteredListofFiles = new ArrayList<>();
 
             filteredListofFiles = filtereDateien(ordnerPfad, listeAllerDateien, regeln);
+            Thread.sleep(1000);
+            System.out.println("Press enter to continue.");
+            br.read();
             if (dryRun == true) {
                 System.out.println("Dryrun enabled");
             } else {
                 System.out.println("Dryrun disabled");
                 if (intro == true) {
                     System.out.println("Do you want to enable Dryrun?");
-                    System.out.println("Dryrun will not move files, it will only list the destination Paths where the files would've been moved");
+                    System.out.println("Dryrun will not move files, it will only list the destination Paths where the files would've been moved to.");
                     System.out.println("Activate Dryrun ? Yes(Y)   No (N)");
                     while (true) {
                         System.out.println("Yes (Y)   No (N)");
@@ -362,6 +364,9 @@ public class Main {
                             System.out.println("input not accepted.");
                         }
                     }
+                    Thread.sleep(2000);
+                    System.out.println("Listing files...");
+                    Thread.sleep(2000);
                 }
             }
             //User abfrage
@@ -375,6 +380,11 @@ public class Main {
                 System.out.println(filteredListofFiles.get(i).getFileName().toString() + "\n-> " + destinationPath.toString() + "\n");
             }
             while (true) {
+                Thread.sleep(1000);
+                System.out.println("\n\nMove all files to the folders");
+                if(dryRun == true) {
+                    System.out.println("You are currently in dryRun-mode\nno matter if you press y or n no files will be moved :)");
+                }
                 System.out.println("Yes (Y)   No (N)");
                 input = br.readLine();
                 if ((input.equals("Y")) || (input.equals("y"))) {
@@ -408,8 +418,10 @@ public class Main {
             } else {
                 System.out.println("Simulation terminated");
                 System.out.println("Goodbye :)");
+                System.exit(0);
             }
-
+            System.out.println("All Files moved.");
+            System.out.println("Goodbye :)");
 
             // System.out.println(holeDateiEndungen("bild.jpg").toString());
         } catch (Exception e) {
