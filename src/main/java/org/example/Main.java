@@ -11,6 +11,26 @@ import java.util.stream.*;
 public class Main {
 
     private static void baueHashmap(Map<String, String> regeln) {
+    //Music
+        regeln.put("mp3", "Musik");
+        regeln.put("wav", "Musik");
+        regeln.put("flac", "Musik");
+        regeln.put("aac", "Musik");
+        regeln.put("m4a", "Musik");
+        regeln.put("ogg", "Musik");
+        regeln.put("opus", "Musik");
+        regeln.put("wma", "Musik");
+        regeln.put("aiff", "Musik");
+        regeln.put("aif", "Musik");
+        regeln.put("alac", "Musik");
+        regeln.put("ape", "Musik");
+        regeln.put("wv", "Musik");
+        regeln.put("dsf", "Musik");
+        regeln.put("dff", "Musik");
+        regeln.put("mka", "Musik");
+        regeln.put("amr", "Musik");
+        regeln.put("mid", "Musik");
+        regeln.put("midi", "Musik");
 // Dokumente
         regeln.put("pdf", "Dokumente");
         regeln.put("doc", "Dokumente");
@@ -87,8 +107,7 @@ public class Main {
         regeln.put("m2ts", "Videos");
         regeln.put("vob", "Videos");
         regeln.put("ogv", "Videos");
-        regeln.put("mp3", "Videos");
-        regeln.put("wav", "Videos");
+
 //Unfertig
         regeln.put("crdownload", "DontTouch");
         regeln.put("part", "DontTouch");
@@ -142,6 +161,8 @@ public class Main {
                 return home.resolve("Videos").resolve("DL-Cleaner");
             } else if (opposite.equals("Installer")) {
                 return plate.resolve("Installer").resolve("DL-Cleaner");
+            } else if (opposite.equals("Musik")) {
+                return home.resolve("Music");
             }
             return home.resolve("Downloads", "Junk").resolve("DL-Cleaner");
         } else {
