@@ -85,7 +85,6 @@ gradlew jar
 The result is in build\libs. To build the native .exe:
 
 cmd:
-"curl -L -O https://github.com/clappetbyColin/DownloadsCleaner/releases/latest/download/DL-Cleaner1.0.exe"
 "curl -L -O https://github.com/clappetbyColin/DownloadsCleaner/releases/latest/download/DL-Cleaner1.1.exe"
 
 
