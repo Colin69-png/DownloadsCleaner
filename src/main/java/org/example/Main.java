@@ -2,12 +2,14 @@ package org.example;
 
 import java.io.*;
 import java.net.URI;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.HashMap.*;
 import java.nio.file.*;
 import java.nio.file.Path.*;
 import java.util.stream.*;
-
+import java.security.MessageDigest.*;
 public class Main {
 
     private static void baueHashmap(Map<String, String> regeln) {
@@ -279,7 +281,28 @@ public class Main {
         }
         return name;
     }
+    private static String buildFileHash(Path pfad)throws NoSuchAlgorithmException, IOException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] puffer = new byte[8192];
+        File datei = new File(pfad.toString());
+        try(InputStream input = Files.newInputStream(pfad)) {
+            int eingelesen;
+            while((eingelesen = input.read(puffer)) != -1) {
+                for(int i = 0; i < eingelesen;i++) {
+                    digest.update(puffer[i]);
+                }
+            }
+        }
+        String hash = HexFormat.of().formatHex(digest.digest());
+        return hash;
 
+    }
+    private static void detectDuplicates(List<Path> filteredList)throws NoSuchAlgorithmException, IOException {
+        List<String> hashList = null;
+        for (int i = 0; i < filteredList.size();i++) {
+            hashList.add(buildFileHash(filteredList.get(i)));
+        }
+    }
     public static void main(String[] args) throws IOException, InterruptedException {
         System.out.println("It can be necessary to start the application with admin rights");
         try {
@@ -312,11 +335,14 @@ public class Main {
             Map<String, String> regeln = new HashMap<>();
             String endung;
             baueHashmap(regeln);
+            boolean deleteDuplicates = false;
             boolean dryRun = false;
             String ordnerPfad = null;
             for (String arg : args) {
                 if (arg.equals("--dry-run")) {
                     dryRun = true;
+                } else if(arg.equals("--delete-duplicates")) {
+                    deleteDuplicates = true;
                 } else if (arg.startsWith("--")) {
                     System.out.println("Unbekannte operation: " + arg);
                 } else {
@@ -359,6 +385,9 @@ public class Main {
             List<Path> filteredListofFiles = new ArrayList<>();
 
             filteredListofFiles = filtereDateien(ordnerPfad, listeAllerDateien, regeln);
+            Thread.sleep(1000);
+            System.out.println("Searching duplicates...");
+            detectDuplicates(filteredListofFiles);
             Thread.sleep(1000);
             System.out.println("Press enter to continue.");
             br.read();
